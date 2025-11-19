@@ -23,11 +23,11 @@ from urllib.parse import quote_plus
 from asyncio import sleep
 
 # ---------------- Environment / Config ----------------
-API_ID = int(os.environ.get("API_ID"))
-API_HASH = os.environ.get("API_HASH")
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
-MONGO_URI = os.environ.get("MONGO_URI")
-ADMINS = [int(x.strip()) for x in (os.getenv("ADMINS")).split(",") if x.strip().isdigit()]
+API_ID = int(os.environ["API_ID"])
+API_HASH = os.environ["API_HASH"]
+BOT_TOKEN = os.environ["BOT_TOKEN"]
+MONGO_URI = os.environ["MONGO_URI"]
+ADMINS = [int(x.strip()) for x in (os.environ["ADMINS"]).split(",") if x.strip().isdigit()]
 ADMIN_ID = ADMINS[0] if ADMINS else None
 
 if not (API_ID and API_HASH and BOT_TOKEN and MONGO_URI):
