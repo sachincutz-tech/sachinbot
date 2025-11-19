@@ -2,7 +2,7 @@
 
 echo "Writing permanent environment variables to /etc/environment ..."
 
-sudo bash -c 'cat >> /etc/environment << EOF
+bash -c 'cat >> /etc/environment << EOF
 API_ID="31040033"
 API_HASH="87e3b8d52438304d90600c16afe70a23"
 BOT_TOKEN="8283084188:AAFdJbGVqS3u02j5UsfCUtWGJgmEe25GhrM"
