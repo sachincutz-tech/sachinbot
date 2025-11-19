@@ -1,0 +1,20 @@
+# Ignore all JSON files
+*.json
+*.lock
+.env
+
+# Ignore a specific file
+errors.log
+
+# Ignore all log files
+*.log
+.env
+.session
+
+# Ignore folders
+__pycache__/
+downloads/
+bot/*
+
+# Ignore all files in a folder
+temp/*
