@@ -349,7 +349,11 @@ async def list_filters(client, message: Message):
             keyword = f.get("keyword", "❓")
             text += f"{idx}. {keyword}\n"
 
-        await message.reply_text(text, quote=True)
+        chunk_size = 240
+        for i in range(0, len(text), chunk_size):
+            chunk = "\n".join(text[i:i + chunk_size])
+            await message.reply(chunk, quote=True)
+        # await message.reply_text(text, quote=True)
         return
 
     # ---------- PRIVATE CHAT (ADMINS ONLY) ----------
@@ -372,7 +376,11 @@ async def list_filters(client, message: Message):
             keyword = f.get("keyword", "❓")
             text += f"{idx}. {keyword}\n"
 
-        await message.reply_text(text, quote=True)
+        chunk_size = 240
+        for i in range(0, len(text), chunk_size):
+            chunk = "\n".join(text[i:i + chunk_size])
+            await message.reply(chunk, quote=True)
+        # await message.reply_text(text, quote=True)
         return
 
     # ---------- DEFAULT FALLBACK ----------
