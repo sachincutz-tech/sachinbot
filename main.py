@@ -325,6 +325,25 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from rapidfuzz import fuzz
 from pyrogram.enums import ChatType  # add this import at top if not already
 
+
+MAX_LEN = 4000   # safe limit
+
+def split_message(text):
+    chunks = []
+    while len(text) > MAX_LEN:
+        # find the last newline before the limit
+        split_at = text.rfind("\n", 0, MAX_LEN)
+
+        if split_at == -1:  # no newline found
+            split_at = MAX_LEN
+
+        chunks.append(text[:split_at])
+        text = text[split_at:].lstrip()
+
+    chunks.append(text)
+    return chunks
+
+
 @client.on_message(filters.command("filters"))
 async def list_filters(client, message: Message):
     # Normalize chat_type (supports both enum and string)
@@ -349,10 +368,10 @@ async def list_filters(client, message: Message):
             keyword = f.get("keyword", "❓")
             text += f"{idx}. {keyword}\n"
 
-        chunk_size = 240
-        for i in range(0, len(text), chunk_size):
-            chunk = "\n".join(text[i:i + chunk_size])
-            await message.reply(chunk, quote=True)
+        parts = split_message(text)
+
+        for part in parts:
+            await message.reply_text(part, quote=True)
         # await message.reply_text(text, quote=True)
         return
 
@@ -376,10 +395,10 @@ async def list_filters(client, message: Message):
             keyword = f.get("keyword", "❓")
             text += f"{idx}. {keyword}\n"
 
-        chunk_size = 240
-        for i in range(0, len(text), chunk_size):
-            chunk = "\n".join(text[i:i + chunk_size])
-            await message.reply(chunk, quote=True)
+        parts = split_message(text)
+
+        for part in parts:
+            await message.reply_text(part, quote=True)
         # await message.reply_text(text, quote=True)
         return
 
