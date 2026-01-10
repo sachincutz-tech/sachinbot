@@ -284,7 +284,6 @@ async def create_filter_from_caption(client, message: Message):
         return await message.reply_text("⚙️ Usage: /filter \"keyword\" inside caption.")
 
     keyword = match.group(1).strip().lower()
-    await message.reply_text(f"✅ Filter '{keyword}' added successfully with photo.")
 
     # Remove the /filter command from caption
     text_content = re.sub(r'/filter\s+"[^"]+"', '', message.caption).strip()
@@ -625,7 +624,6 @@ async def view_filter(client, message: Message):
         return await message.reply_text("⚙️ Usage: /view \"keyword\"")
 
     keyword = parts[1].strip().lower()
-    return
 
     user_data = user_conn_col.find_one({"user_id": user_id})
     if not user_data or not user_data.get("active_group"):
