@@ -21,6 +21,7 @@ from pymongo import MongoClient
 from rapidfuzz import fuzz
 from urllib.parse import quote_plus
 from asyncio import sleep
+from bson.int64 import Int64
 
 # ---------------- Environment / Config ----------------
 API_ID = int(os.environ["API_ID"])
@@ -304,7 +305,7 @@ async def create_filter_from_caption(client, message: Message):
 
     # Prepare data for DB
     data = {
-        "chat_id": group_id,
+        "chat_id": Int64(group_id),
         "keyword": keyword,
         "type": msg_type,
         "text": text_content,
@@ -313,7 +314,7 @@ async def create_filter_from_caption(client, message: Message):
     }
 
     filters_col.update_one(
-        {"chat_id": group_id, "keyword": keyword},
+        {"chat_id": Int64(group_id), "keyword": keyword},
         {"$set": data},
         upsert=True
     )
@@ -803,7 +804,15 @@ async def filter_auto_reply(client, message: Message):
     user_id = message.from_user.id
 
     # Fetch all filters for this group
-    all_filters = list(filters_col.find({"chat_id": chat_id}))
+    # all_filters = list(filters_col.find({"chat_id": chat_id}))
+    all_filters = list(
+        filters_col.find({
+            "$or": [
+                {"chat_id": chat_id},
+                {"chat_id": Int64(chat_id)}
+            ]
+        })
+    )
     if not all_filters:
         if user_id not in ADMINS:
             await message.reply_text(
